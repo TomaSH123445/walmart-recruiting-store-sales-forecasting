@@ -1,43 +1,35 @@
 # Business Questions
 
-Analytical questions this project aims to answer using Snowflake SQL and Python.
+This project explores how weekly Walmart sales vary across stores and departments, which external factors influence performance, and how analytics-ready data models can support forecasting and operational planning.
 
 ---
 
 ## Sales Performance
 
 1. Which stores and departments generate the highest weekly sales?
-2. How do sales vary by store type (`A`, `B`, `C`) and store size?
-3. What is the year-over-year and week-over-week sales growth by store?
+2. How do sales differ by store type (`A`, `B`, `C`) and by store size?
+3. Which stores show the strongest week-over-week and year-over-year sales growth?
 
-## Seasonality & Holidays
+## Seasonality and Holidays
 
-4. How much do sales increase during holiday weeks compared to non-holiday weeks?
-5. Which months and quarters show the strongest seasonal patterns?
-6. Are certain store types more sensitive to holiday effects?
+4. How large is the sales lift during holiday weeks compared with non-holiday weeks?
+5. Which months or seasonal periods show the strongest sales patterns?
+6. Are some store types more sensitive to holiday effects than others?
 
-## External Factors
+## External Drivers
 
-7. Does temperature correlate with weekly sales at the store level?
-8. How do fuel price changes relate to sales trends?
-9. Do markdown promotions (MarkDown1–5) lift sales in the weeks they are active?
+7. Is there a visible relationship between temperature and weekly sales at the store level?
+8. How do fuel price changes relate to store-level sales trends?
+9. Do markdown promotions (`MarkDown1`–`MarkDown5`) appear to influence sales performance?
 
-## Forecasting & Planning
+## Forecasting
 
-10. Can we forecast next-week department sales using historical patterns and features?
-11. Which departments are hardest to forecast (highest error)?
-12. How would inventory and staffing plans change if we used model-based forecasts?
+10. Can next-week store or department sales be forecast using historical sales patterns?
+11. Does a simple forecasting baseline perform well enough to serve as a benchmark?
+12. Which stores or departments are the most difficult to forecast accurately?
 
-## Data Quality
+## Data Quality and Model Readiness
 
-13. Are there missing or anomalous values in features (CPI, Unemployment, MarkDowns)?
-14. Do all stores in `train` have matching rows in `stores` and `features`?
-15. Are there duplicate Store + Dept + Date combinations in the training data?
-
----
-
-## TODO
-
-- [ ] Prioritize top 5 questions for the portfolio README "Key Insights" section
-- [ ] Map each question to a SQL script or notebook section
-- [ ] Document expected KPIs (e.g., MAPE for forecasting, % holiday lift)
+13. Are there missing, duplicate, or anomalous records in the source data?
+14. Do all training records match valid store and feature reference data?
+15. Is the dataset clean and structured enough for downstream analytics and forecasting workflows?
