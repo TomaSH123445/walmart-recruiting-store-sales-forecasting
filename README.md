@@ -120,6 +120,14 @@ The Streamlit dashboard connects to Snowflake reporting views and provides inter
 - Top departments by store table
 - Detailed store-week operational metrics
 
+### Dashboard Preview
+
+**Overview**
+![Walmart Dashboard Overview](assets/screenshots/dashboard-overview.png)
+
+**Operational detail**
+![Walmart Dashboard Operational Detail](assets/screenshots/dashboard-detail.png)
+
 ---
 
 ## Key Insights
