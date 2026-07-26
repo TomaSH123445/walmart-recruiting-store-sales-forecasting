@@ -1,0 +1,56 @@
+# ---------------------------------------------------------------------------
+# Raw Kaggle data — never commit dataset files to GitHub
+# ---------------------------------------------------------------------------
+*.csv
+*.tsv
+*.xlsx
+*.parquet
+
+# Local data directories
+data/
+raw/
+datasets/
+kaggle/
+
+# ---------------------------------------------------------------------------
+# Python
+# ---------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+.env
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+*.nbconvert.ipynb
+
+# ---------------------------------------------------------------------------
+# Snowflake / credentials
+# ---------------------------------------------------------------------------
+snowflake_credentials.json
+connections.toml
+*.p8
+*.pem
+
+# ---------------------------------------------------------------------------
+# IDE & OS
+# ---------------------------------------------------------------------------
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Streamlit
+.streamlit/secrets.toml
