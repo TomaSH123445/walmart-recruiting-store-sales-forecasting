@@ -1,109 +1,157 @@
 # Walmart Store Sales Forecasting & Retail Analytics in Snowflake
 
-An end-to-end analytics portfolio project built with **Snowflake SQL**, **Python**, and **Streamlit** to analyze Walmart store and department sales using the Kaggle Walmart Recruiting dataset. The project demonstrates a production-style analytics workflow from raw ingestion to business-ready reporting and dashboard delivery.
+A end-to-end analytics portfolio project combining **Snowflake SQL**, **Python**, and optional **forecasting** to analyze Walmart store and department sales using the [Kaggle Walmart Recruiting dataset](https://www.kaggle.com/c/walmart-recruiting-store-sales-forecasting).
 
 ---
 
-## Project Summary
+## Project Overview
 
-This project was designed to answer a practical retail analytics question: how do weekly sales vary across Walmart stores and departments, what factors influence those changes, and how can those patterns support better planning?
+This project demonstrates a production-style analytics workflow:
 
-The solution includes:
+1. Ingest Kaggle CSV files into Snowflake **RAW** tables
+2. Clean and standardize data in **STAGING**
+3. Build business-ready **MARTS** (facts and dimensions)
+4. Expose **REPORTING** views for dashboards and SQL demos
+5. Explore data and optional forecasts in **Jupyter notebooks**
+6. Present insights in a **Streamlit** app
 
-- Snowflake data warehouse design with **RAW**, **STAGING**, **MARTS**, and **REPORTING** layers
-- SQL transformations for data cleaning, typing, deduplication, and fact/dimension modeling
-- Reporting views for analytics consumption
-- A Streamlit portfolio dashboard connected directly to Snowflake
-- Optional Python notebooks for EDA, data quality, and forecasting extensions
+The repository is structured for learning and portfolio review — SQL scripts are numbered and documented, and raw data is never committed to Git.
 
 ---
+
+
 
 ## Business Problem
 
-Retail teams need visibility into weekly sales performance to make better decisions around inventory, staffing, promotions, and seasonal planning. Sales are affected not only by store and department behavior, but also by holidays, temperature, fuel prices, markdowns, and macroeconomic variables such as CPI and unemployment.
+Retail leaders need accurate weekly sales forecasts at the store and department level to plan inventory, staffing, and promotions. External factors — holidays, weather, fuel prices, markdowns, and regional economics — all influence demand.
 
-This project explores:
+This project answers: *How do sales vary across stores and departments, what drives weekly changes, and can we forecast future demand using historical patterns and features?*
 
-- How sales differ across store types and departments
-- Whether holiday weeks produce measurable sales lift
-- How store-level external features relate to weekly sales performance
-- How analytics-ready data models can support both reporting and future forecasting work
+See [business_questions.md](business_questions.md) for the full list of analytical questions.
 
 ---
+
+
 
 ## Dataset
 
-Source: **Walmart Recruiting — Store Sales Forecasting** on Kaggle.
 
-| File | Description | Grain |
-|------|-------------|-------|
-| `train.csv` | Historical weekly sales | Store + Dept + Date |
-| `test.csv` | Holdout periods without target sales | Store + Dept + Date |
-| `features.csv` | Temperature, fuel price, markdowns, CPI, unemployment, holiday flag | Store + Date |
-| `stores.csv` | Store type and store size | Store |
+| File           | Description                                     | Grain               |
+| -------------- | ----------------------------------------------- | ------------------- |
+| `train.csv`    | Historical sales                                | Store + Dept + Date |
+| `test.csv`     | Holdout period (no sales)                       | Store + Dept + Date |
+| `features.csv` | Temperature, fuel, markdowns, CPI, unemployment | Store + Date        |
+| `stores.csv`   | Store type and size                             | Store               |
 
-> CSV source files are downloaded locally from Kaggle and excluded from Git with `.gitignore`.
+
+Full column definitions: [data_dictionary.md](data_dictionary.md)
+
+> **Note:** Download the dataset from Kaggle locally. CSV files are excluded via `.gitignore`.
+
+---
+
+
+
+## Tools Used
+
+
+| Category        | Tools                                              |
+| --------------- | -------------------------------------------------- |
+| Data warehouse  | Snowflake                                          |
+| SQL             | Snowflake SQL (window functions, views, COPY INTO) |
+| Python          | pandas, NumPy, Matplotlib, Seaborn                 |
+| Connectivity    | snowflake-connector-python                         |
+| Notebooks       | Jupyter                                            |
+| Forecasting     | scikit-learn, statsmodels (optional)               |
+| Dashboard       | Streamlit                                          |
+| Version control | Git / GitHub                                       |
+
 
 ---
 
-## Tech Stack
 
-| Category | Tools |
-|----------|-------|
-| Data warehouse | Snowflake |
-| SQL | Snowflake SQL, CTAS, views, window functions |
-| Python | pandas, NumPy |
-| Dashboard | Streamlit |
-| Connectivity | snowflake-connector-python |
-| Notebooks | Jupyter |
-| Forecasting | scikit-learn, statsmodels (optional extension) |
-| Version control | Git, GitHub |
-
----
 
 ## Architecture
 
-```text
-Kaggle CSVs
-    ↓
-RAW
-    ↓
-STAGING
-    ↓
-MARTS
-    ↓
-REPORTING
-    ↓
-Streamlit Dashboard / SQL Analysis / Notebook Exploration
+```
+Kaggle CSVs  →  RAW  →  STAGING  →  MARTS  →  REPORTING
+                  ↑                                    ↓
+            (03_load_data)              (Streamlit / BI / SQL demos)
+                                                  ↑
+                                          Python notebooks (EDA, DQ, ML)
 ```
 
-### Snowflake layers
-
-| Schema | Purpose | Key Objects |
-|--------|---------|-------------|
-| `RAW` | Landing zone that mirrors source CSV structure | `TRAIN`, `TEST`, `FEATURES`, `STORES` |
-| `STAGING` | Cleaned and standardized layer with typed fields and deduplication | `STG_TRAIN`, `STG_TEST`, `STG_FEATURES`, `STG_STORES` |
-| `MARTS` | Business-ready dimensional layer for analytics | `DIM_STORE`, `FACT_SALES`, `FACT_STORE_FEATURES`, `FACT_STORE_WEEKLY_SALES` |
-| `REPORTING` | Thin consumption views for dashboarding and SQL demos | `VW_SALES_SUMMARY`, `VW_HOLIDAY_IMPACT`, `VW_TOP_DEPARTMENTS`, `VW_STORE_WEEK_METRICS` |
-
-Warehouse used: `WALMART_WH`.
+Detailed design: [docs/architecture.md](docs/architecture.md)
 
 ---
 
-## Data Pipeline
 
-The SQL pipeline is implemented as numbered scripts and executed in order:
 
-1. `01_create_database.sql` — creates the database, schemas, and warehouse
-2. `02_create_raw_tables.sql` — creates RAW landing tables
-3. `03_load_data.sql` — loads staged CSV data into RAW tables
-4. `04_create_staging.sql` — standardizes and cleans source data in STAGING
-5. `05_create_marts.sql` — builds dimensional and fact tables in MARTS
-6. `06_window_functions.sql` — demonstrates analytical SQL patterns
-7. `07_reporting_views.sql` — exposes reporting-friendly dashboard views
-8. `08_data_quality_checks.sql` — validates RAW, STAGING, and MARTS outputs
+## Snowflake Layers
+
+
+| Schema        | Purpose                             | Key Objects                                                                            |
+| ------------- | ----------------------------------- | -------------------------------------------------------------------------------------- |
+| **RAW**       | Landing zone — mirror CSV structure | `TRAIN`, `TEST`, `FEATURES`, `STORES`                                                  |
+| **STAGING**   | Cleaned, typed, deduplicated        | `STG_TRAIN`, `STG_TEST`, `STG_FEATURES`, `STG_STORES`                                  |
+| **MARTS**     | Star-schema facts and dimensions    | `FACT_SALES`, `DIM_STORE`, `FACT_STORE_FEATURES`, `FACT_STORE_WEEKLY_SALES`            |
+| **REPORTING** | Business views for consumption      | `VW_SALES_SUMMARY`, `VW_HOLIDAY_IMPACT`, `VW_TOP_DEPARTMENTS`, `VW_STORE_WEEK_METRICS` |
+
+
+Warehouse: `WALMART_WH` (XSMALL, auto-suspend 60s)
+
+### Layer overview
+
+- **RAW** — Minimal transformation landing zone. Tables mirror Kaggle CSV column order and structure so every downstream result can be traced to source files.
+- **STAGING** — Standardized snake_case columns, deduplication on natural keys, and audit timestamps. NULL values for missing markdowns or economic indicators are preserved (not imputed to zero).
+- **MARTS** — Business-ready star schema: `DIM_STORE` plus fact tables at department and store-week grains, with features joined for analysis and forecasting.
+- **REPORTING** — Thin views on top of marts for dashboards, Streamlit, and portfolio SQL demos. No heavy transformation logic lives here.
 
 ---
+
+
+
+## Run order
+
+Execute the SQL scripts in Snowflake in this exact order:
+
+1. `sql/01_create_database.sql` — database, schemas, warehouse
+2. `sql/02_create_raw_tables.sql` — RAW table DDL
+3. Upload all four source CSV files to `@RAW.CSV_STAGE` (PUT or Snowflake UI)
+4. `sql/03_load_data.sql` — COPY INTO raw tables
+5. `sql/08_data_quality_checks.sql` — **Section A** (RAW checks)
+6. `sql/04_create_staging.sql` — staging transformations
+7. `sql/05_create_marts.sql` — facts and dimensions
+8. `sql/08_data_quality_checks.sql` — **Sections B & C** (STAGING and MARTS checks)
+9. `sql/06_window_functions.sql` — analytical window function examples
+10. `sql/07_reporting_views.sql` — reporting views
+
+> **Required source files:** `train.csv`, `test.csv`, `features.csv`, and `stores.csv` must all be present on the stage before running `03_load_data.sql`.
+
+---
+
+
+
+## SQL Analysis
+
+Numbered scripts in `sql/` — run in order:
+
+
+| Script                       | Description                                     |
+| ---------------------------- | ----------------------------------------------- |
+| `01_create_database.sql`     | Database, schemas, warehouse                    |
+| `02_create_raw_tables.sql`   | RAW table DDL                                   |
+| `03_load_data.sql`           | Stage + COPY INTO (active load statements)      |
+| `04_create_staging.sql`      | Staging CTAS with deduplication                 |
+| `05_create_marts.sql`        | Facts, dimensions, store-week rollup            |
+| `06_window_functions.sql`    | Moving averages, WoW, ranking, holiday analysis |
+| `07_reporting_views.sql`     | Dashboard-ready views                           |
+| `08_data_quality_checks.sql` | RAW, STAGING, and MARTS validation queries      |
+
+
+---
+
+
 
 ## Dashboard
 
@@ -111,109 +159,132 @@ The Streamlit dashboard connects to Snowflake reporting views and provides inter
 
 ### Dashboard features
 
-- Sidebar filters for store type, store, date range, and holiday-only analysis
-- KPI cards for total sales, average weekly sales, holiday lift, active stores, and active departments
-- Weekly sales trend visualization
-- Sales comparison by store type
-- Holiday vs non-holiday comparison
-- Scatter plots for temperature vs sales and fuel price vs sales
-- Top departments by store table
-- Detailed store-week operational metrics
+- Sidebar filters for store type, store, date range, and holiday-only analysis.
+- KPI cards for total sales, average weekly sales, holiday lift, active stores, and active departments.
+- Weekly sales trend visualization.
+- Sales comparison by store type.
+- Holiday vs non-holiday comparison.
+- Scatter plots for temperature vs sales and fuel price vs sales.
+- Top departments by store table.
+- Detailed store-week operational metrics.
 
-### Dashboard Preview
+
+
+### Dashboard preview
 
 **Overview**
-![Walmart Dashboard Overview](assets/screenshots/dashboard-overview.png)
+
+Walmart Dashboard Overview
 
 **Operational detail**
-![Walmart Dashboard Operational Detail](assets/screenshots/dashboard-detail.png)
+
+Walmart Dashboard Operational Detail
 
 ---
+
+
+
+## Python EDA
+
+Notebook: [notebooks/01_eda.ipynb](notebooks/01_eda.ipynb)
+
+Planned exploration:
+
+- Sales distribution by store type and department
+- Seasonality and holiday effects
+- Missing values in markdown and economic features
+- Correlation between temperature, fuel price, and sales
+
+---
+
+
+
+## Forecasting
+
+Notebook: [notebooks/02_forecasting.ipynb](notebooks/02_forecasting.ipynb)
+
+Optional baseline forecasting workflow:
+
+- Feature engineering from marts or local CSVs
+- Train/test split aligned with Kaggle `test.csv` dates
+- Baseline models (e.g., seasonal naive, linear regression)
+- Error metrics (MAE, MAPE)
+
+---
+
+
+
+## Data Quality Checks
+
+- **SQL:** [sql/08_data_quality_checks.sql](sql/08_data_quality_checks.sql) — duplicates, orphans, nulls, outliers
+
+---
+
+
 
 ## Key Insights
 
-Based on the current dashboard output:
+> *Insights will be documented here as analysis progresses.*
 
-- Holiday weeks show a measurable sales lift, with average department sales approximately **7.13% higher** than non-holiday weeks.
-- The dashboard currently summarizes sales across **45 active stores**.
-- Average weekly sales are approximately **$1.05M** across the selected default view.
-- Store type comparisons show clear differences in total sales contribution, which supports segmentation analysis by store format.
-- External factors such as temperature and fuel price can be explored visually against weekly sales at the store-week level.
+See [docs/insights.md](docs/insights.md) for draft findings and [business_questions.md](business_questions.md) for questions to answer.
 
 ---
 
-## SQL Analysis Highlights
 
-The project includes SQL examples beyond ETL:
-
-- Moving averages to smooth weekly volatility
-- `LAG` and `LEAD` for week-over-week comparison
-- Ranking logic for top departments within each store
-- Holiday performance analysis
-- Store-week rollups for dashboard use
-
----
 
 ## Repository Structure
 
-```text
+```
 ├── README.md
+├── data_dictionary.md
+├── business_questions.md
 ├── .gitignore
 ├── requirements.txt
-├── sql/
-│   ├── 01_create_database.sql
-│   ├── 02_create_raw_tables.sql
-│   ├── 03_load_data.sql
-│   ├── 04_create_staging.sql
-│   ├── 05_create_marts.sql
-│   ├── 06_window_functions.sql
-│   ├── 07_reporting_views.sql
-│   └── 08_data_quality_checks.sql
-├── notebooks/
-│   ├── 01_eda.ipynb
-│   ├── 02_forecasting.ipynb
-│   └── 03_data_quality.ipynb
+├── sql/                    # Snowflake scripts (01–08)
+├── notebooks/              # EDA, forecasting, data quality
+├── docs/                   # Architecture, insights, AI workflow
 └── app/
-    └── streamlit_app.py
+    └── streamlit_app.py    # Optional dashboard
 ```
 
 ---
 
+
+
 ## How to Run
 
-### 1. Set up Python
+
+
+### 1. Clone and set up Python
 
 ```bash
+git clone <your-repo-url>
+cd walmart-recruiting-store-sales-forecasting
 python -m venv .venv
-source .venv/bin/activate
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 2. Download the Kaggle data
 
-Download these files locally:
 
-- `train.csv`
-- `test.csv`
-- `features.csv`
-- `stores.csv`
+### 2. Download Kaggle data
 
-### 3. Execute Snowflake SQL scripts
+Download `train.csv`, `test.csv`, `features.csv`, and `stores.csv` from Kaggle.  
+Place them in a local folder (e.g., `data/`) — this folder is gitignored.
 
-Run the SQL files in the pipeline order listed above.
+### 3. Snowflake setup
 
-### 4. Configure Streamlit secrets
+Follow the [Run order](#run-order) section above. All eight SQL scripts are implemented and ready to execute in Snowflake.
 
-Create `.streamlit/secrets.toml`:
+### 4. Run notebooks
 
-```toml
-[snowflake]
-user = "YOUR_USER"
-password = "YOUR_PASSWORD"
-account = "YOUR_ACCOUNT_IDENTIFIER"
+```bash
+jupyter notebook notebooks/
 ```
 
-### 5. Launch the dashboard
+
+
+### 5. Launch Streamlit (optional)
 
 ```bash
 streamlit run app/streamlit_app.py
@@ -221,34 +292,23 @@ streamlit run app/streamlit_app.py
 
 ---
 
-## What This Project Demonstrates
 
-This project demonstrates practical skills in:
 
-- Data warehousing in Snowflake
-- ELT pipeline design
-- SQL-based dimensional modeling
-- Reporting-layer design for analytics consumption
-- Window functions for business analysis
-- Python-to-Snowflake integration
-- Building a portfolio-ready analytical dashboard
+## Next Steps
 
----
-
-## Next Improvements
-
-Potential extensions for the project:
-
-- Add README screenshots and architecture diagram
-- Add baseline forecasting models in the forecasting notebook
-- Expand insight documentation with written business commentary
-- Deploy the Streamlit dashboard publicly
-- Add automated testing or validation checks for the SQL pipeline
+- [x] Implement full Snowflake ELT pipeline (RAW → STAGING → MARTS → REPORTING)
+- [ ] Run EDA notebook and document insights in `docs/insights.md`
+- [ ] Add baseline forecasting model in `02_forecasting.ipynb`
+- [ ] Connect Streamlit to Snowflake reporting views
+- [x] Prepare chart screenshots for README and portfolio use
+- [ ] Embed screenshots directly in the GitHub README
+- [ ] Add architecture diagram screenshot to README
 
 ---
+
+
 
 ## License & Attribution
 
-Dataset: **Walmart Recruiting — Store Sales Forecasting** from Kaggle.
-
-This project is intended for educational and portfolio purposes.
+Dataset: Walmart Recruiting — Store Sales Forecasting (Kaggle).  
+This project is for educational and portfolio purposes.
