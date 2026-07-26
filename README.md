@@ -174,11 +174,11 @@ The Streamlit dashboard connects to Snowflake reporting views and provides inter
 
 **Overview**
 
-Walmart Dashboard Overview
+![Walmart Dashboard Overview](assets/screenshots/dashboard-overview.png)
 
 **Operational detail**
 
-Walmart Dashboard Operational Detail
+![Walmart Dashboard Operational Detail](assets/screenshots/dashboard-detail.png)
 
 ---
 
@@ -186,7 +186,7 @@ Walmart Dashboard Operational Detail
 
 ## Python EDA
 
-Notebook: [notebooks/01_eda.ipynb](notebooks/01_eda.ipynb)
+Notebook: [notebooks/01_eda.ipynb](notebooks/01_eda_and_business_insights.ipynb)
 
 Planned exploration:
 
@@ -201,7 +201,7 @@ Planned exploration:
 
 ## Forecasting
 
-Notebook: [notebooks/02_forecasting.ipynb](notebooks/02_forecasting.ipynb)
+Notebook: [notebooks/02_forecasting.ipynb](notebooks/02_forecasting_baseline.ipynb)
 
 Optional baseline forecasting workflow:
 
