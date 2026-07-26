@@ -16,6 +16,7 @@
 USE DATABASE WALMART_SALES;
 USE SCHEMA RAW;
 USE WAREHOUSE WALMART_WH;
+SHOW TABLES IN SCHEMA RAW;
 
 -- ----------------------------------------------------------------------------
 -- Step 1: Internal stage and CSV file format
@@ -51,24 +52,25 @@ CREATE OR REPLACE STAGE RAW.CSV_STAGE
 LIST @RAW.CSV_STAGE;
 
 -- ----------------------------------------------------------------------------
--- Step 3: COPY INTO raw tables
+-- Step 3: COPY INTO rWALMART_SALESWALMART_SALES.RAW.CSV_STAGEWALMART_SALES.RAW.CSV_STAGEWALMART_SALES.RAW.CSV_STAGEWALMART_SALES.RAW.CSV_STAGEaw tables
 -- ON_ERROR = 'ABORT_STATEMENT' fails the load immediately on any bad row.
 -- Column order in CSV must match table DDL (see 02_create_raw_tables.sql).
 -- ----------------------------------------------------------------------------
+
 COPY INTO RAW.TRAIN
-FROM @RAW.CSV_STAGE/train.csv.gz
+FROM @RAW.CSV_STAGE/train.csv
 ON_ERROR = 'ABORT_STATEMENT';
 
 COPY INTO RAW.TEST
-FROM @RAW.CSV_STAGE/test.csv.gz
+FROM @RAW.CSV_STAGE/test.csv
 ON_ERROR = 'ABORT_STATEMENT';
 
 COPY INTO RAW.FEATURES
-FROM @RAW.CSV_STAGE/features.csv.gz
+FROM @RAW.CSV_STAGE/features.csv
 ON_ERROR = 'ABORT_STATEMENT';
 
 COPY INTO RAW.STORES
-FROM @RAW.CSV_STAGE/stores.csv.gz
+FROM @RAW.CSV_STAGE/stores.csv
 ON_ERROR = 'ABORT_STATEMENT';
 
 -- ----------------------------------------------------------------------------
@@ -81,3 +83,5 @@ UNION ALL
 SELECT 'RAW.FEATURES', COUNT(*) FROM RAW.FEATURES
 UNION ALL
 SELECT 'RAW.STORES',   COUNT(*) FROM RAW.STORES;
+
+SELECT COUNT(*) FROM WALMART_SALES.RAW.STORES;  -- 45

@@ -134,8 +134,24 @@ UNION ALL
 SELECT 'FACT_STORE_WEEKLY_SALES', COUNT(*) FROM MARTS.FACT_STORE_WEEKLY_SALES;
 
 -- Verification: fact rows without a matching DIM_STORE (expect 0 after INNER JOIN build)
-SELECT COUNT(*) AS orphan_fact_sales_rows
+WALMART_SALES.PUBLICWALMART_SALES.RAWWALMART_SALES.MARTSSELECT COUNT(*) AS orphan_fact_sales_rows
 FROM STAGING.STG_TRAIN t
 LEFT JOIN MARTS.DIM_STORE d
     ON t.store = d.store
 WHERE d.store IS NULL;
+
+
+SELECT COUNT(*) AS orphan_fact_sales_rows
+FROM MARTS.FACT_SALES f
+LEFT JOIN MARTS.DIM_STORE d
+ON f.store = d.store
+WHERE d.store IS NULL;
+
+SELECT COUNT(*) AS null_weekly_sales
+FROM MARTS.FACT_SALES
+WHERE weekly_sales IS NULL;
+
+SELECT store, dept, sales_date, COUNT(*) AS cnt
+FROM MARTS.FACT_SALES
+GROUP BY store, dept, sales_date
+HAVING COUNT(*) > 1;

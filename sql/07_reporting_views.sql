@@ -60,7 +60,7 @@ WITH department_sales AS (
     SELECT
         store,
         dept,
-        SUM(weekly_sales)               AS total_sales
+        SUM(weekly_sales) AS total_sales
     FROM MARTS.FACT_SALES
     GROUP BY store, dept
 )
@@ -71,11 +71,8 @@ SELECT
     DENSE_RANK() OVER (
         PARTITION BY store
         ORDER BY total_sales DESC
-    )                                   AS department_rank
+    ) AS department_rank
 FROM department_sales;
-
-COMMENT ON VIEW REPORTING.VW_TOP_DEPARTMENTS IS
-    'Ranked departments by total sales per store';
 
 -- ----------------------------------------------------------------------------
 -- REPORTING.VW_STORE_WEEK_METRICS
@@ -106,3 +103,10 @@ COMMENT ON VIEW REPORTING.VW_STORE_WEEK_METRICS IS
 
 -- Verify views
 SHOW VIEWS IN SCHEMA REPORTING;
+
+SHOW VIEWS IN SCHEMA REPORTING;
+
+SELECT * FROM REPORTING.VW_SALES_SUMMARY LIMIT 10;
+SELECT * FROM REPORTING.VW_HOLIDAY_IMPACT LIMIT 10;
+SELECT * FROM REPORTING.VW_TOP_DEPARTMENTS WHERE department_rank <= 3 LIMIT 20;
+SELECT * FROM REPORTING.VW_STORE_WEEK_METRICS LIMIT 10;

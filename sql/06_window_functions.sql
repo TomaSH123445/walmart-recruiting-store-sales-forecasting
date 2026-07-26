@@ -44,7 +44,8 @@ SELECT
         ORDER BY sales_date
     ) AS prior_week_sales,
     (
-        weekly_sales - LAG(weekly_sales) OVER (
+        weekly_sales
+        - LAG(weekly_sales) OVER (
             PARTITION BY store, dept
             ORDER BY sales_date
         )
