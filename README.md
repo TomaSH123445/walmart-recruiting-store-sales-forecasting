@@ -19,8 +19,6 @@ The repository is structured for learning and portfolio review — SQL scripts a
 
 ---
 
-
-
 ## Business Problem
 
 Retail leaders need accurate weekly sales forecasts at the store and department level to plan inventory, staffing, and promotions. External factors — holidays, weather, fuel prices, markdowns, and regional economics — all influence demand.
@@ -170,17 +168,14 @@ The Streamlit dashboard connects to Snowflake reporting views and provides inter
 
 
 
-### Dashboard preview
-
 **Overview**
 
-Walmart Dashboard Overview
+![Walmart Dashboard Overview](assets/screenshots/dashboard-overview.png)
 
 **Operational detail**
 
-Walmart Dashboard Operational Detail
+![Walmart Dashboard Operational Detail](assets/screenshots/dashboard-detail.png)
 
----
 
 
 
