@@ -8,14 +8,7 @@ st.set_page_config(
     layout="wide",
 )
 
-st.title("Walmart Store Sales Forecasting & Retail Analytics")
-st.markdown(
-    """
-Portfolio dashboard for the **Walmart Recruiting — Store Sales Forecasting** project.
-This app connects to Snowflake `REPORTING` views built on top of a RAW → STAGING → MARTS → REPORTING pipeline.
-"""
-)
-
+st.title("Walmart Store Sales Forecasting and Retail Analytics")
 
 @st.cache_resource
 def get_connection():

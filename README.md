@@ -174,11 +174,11 @@ The Streamlit dashboard connects to Snowflake reporting views and provides inter
 
 **Overview**
 
-![Walmart Dashboard Overview](assets/screenshots/dashboard-overview.png)
+Walmart Dashboard Overview
 
 **Operational detail**
 
-![Walmart Dashboard Operational Detail](assets/screenshots/dashboard-detail.png)
+Walmart Dashboard Operational Detail
 
 ---
 
@@ -224,9 +224,15 @@ Optional baseline forecasting workflow:
 
 ## Key Insights
 
-> *Insights will be documented here as analysis progresses.*
+The analysis shows clear seasonal patterns in weekly sales, with stronger performance toward the end of the year and visible holiday-related spikes. Holiday weeks tend to outperform non-holiday weeks on average, but the effect is moderate rather than dramatic.
 
-See [docs/insights.md](docs/insights.md) for draft findings and [business_questions.md](business_questions.md) for questions to answer.
+External variables such as temperature, fuel price, CPI, and unemployment show weak standalone relationships with weekly sales in the exploratory analysis. Markdown activity appears more informative, but the relationship is noisy and likely non-linear.
+
+At the store and department level, sales behavior varies substantially, which means aggregate trends do not fully describe local performance. Some departments are stable, while others show sharp volatility and sudden drops or spikes.
+
+The baseline forecasting models capture the overall trend reasonably well, but they struggle with abrupt changes and department-level volatility. This suggests that stronger forecasting performance will likely require richer lag features, rolling statistics, and holiday-aware time-series features.
+
+Overall, the project shows that Walmart sales are shaped by a combination of seasonality, promotions, and local store-department dynamics rather than by a single external driver.
 
 ---
 
