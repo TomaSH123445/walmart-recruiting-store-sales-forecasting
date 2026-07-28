@@ -19,6 +19,8 @@ The repository is structured for learning and portfolio review — SQL scripts a
 
 ---
 
+
+
 ## Business Problem
 
 Retail leaders need accurate weekly sales forecasts at the store and department level to plan inventory, staffing, and promotions. External factors — holidays, weather, fuel prices, markdowns, and regional economics — all influence demand.
@@ -166,18 +168,13 @@ The Streamlit dashboard connects to Snowflake reporting views and provides inter
 - Top departments by store table.
 - Detailed store-week operational metrics.
 
-
-
 **Overview**
 
-![Walmart Dashboard Overview](assets/screenshots/dashboard-overview.png)
+Walmart Dashboard Overview
 
 **Operational detail**
 
-![Walmart Dashboard Operational Detail](assets/screenshots/dashboard-detail.png)
-
-
-
+Walmart Dashboard Operational Detail
 
 ## Python EDA
 
@@ -298,11 +295,11 @@ streamlit run app/streamlit_app.py
 ## Next Steps
 
 - [x] Implement full Snowflake ELT pipeline (RAW → STAGING → MARTS → REPORTING)
-- [ ] Run EDA notebook and document insights in `docs/insights.md`
-- [ ] Add baseline forecasting model in `02_forecasting.ipynb`
-- [ ] Connect Streamlit to Snowflake reporting views
+- [x] Run EDA notebook and document insights in `docs/insights.md`
+- [x] Add baseline forecasting model in `02_forecasting.ipynb`
+- [x] Connect Streamlit to Snowflake reporting views
 - [x] Prepare chart screenshots for README and portfolio use
-- [ ] Embed screenshots directly in the GitHub README
+- [x] Embed screenshots directly in the GitHub README
 - [ ] Add architecture diagram screenshot to README
 
 ---
